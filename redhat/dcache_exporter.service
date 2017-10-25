@@ -1,0 +1,13 @@
+[Unit]
+Description=Prometheus exporter for dcache metrics
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/default/dcache_exporter
+User=prometheus
+ExecStart=/usr/bin/dcache_exporter $DCACHE_EXPORTER_OPTS
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
