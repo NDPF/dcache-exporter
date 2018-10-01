@@ -48,16 +48,17 @@ class DcacheCollector(object):
         return m.group(2)
 
     def _get_xml_tree(self):
-        connection = httplib.HTTPConnection(self._info_host, self._info_port)
-        connection.request("GET", self._info_url)
-        response = connection.getresponse()
-
-        if response.status != 200:
-            connection.close()
-            return None
-
-        text = response.read()
-        connection.close()
+        data = []
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((self._info_host, self._info_port))
+        sock.settimeout(10)
+        while True:
+            d = sock.recv(1024)
+            if not d:
+                break
+            data.append(d)
+        sock.close()
+        text = ''.join(data)
         tree = ET.fromstring(text)
         return tree
 
@@ -104,7 +105,7 @@ class DcacheCollector(object):
             yield self._metrics[metric_name]
 
 def main():
-    pclient.REGISTRY.register(DcacheCollector("localhost", 2288, "/info"))
+    pclient.REGISTRY.register(DcacheCollector("localhost", 22112))
     start_http6_server(9310, '::')
     while True:
         time.sleep(10)
