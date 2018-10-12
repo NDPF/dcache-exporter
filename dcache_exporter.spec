@@ -1,7 +1,7 @@
 Summary: Prometheus exporter for dcache metrics
 Name: dcache_exporter
 Version: %{_version}
-Release: 2
+Release: 1
 License: GPLv3
 Source0: %{_source}
 

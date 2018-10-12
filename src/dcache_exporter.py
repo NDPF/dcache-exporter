@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from SocketServer import ThreadingMixIn
 
-VERSION = '0.3'
+VERSION = '0.4'
 
 def start_http6_server(port, addr=''):
     """Starts an HTTP server for prometheus metrics as a daemon thread"""
@@ -86,10 +86,10 @@ class ExportTag(object):
 
 
 class DcacheCollector(object):
-    ExportTags = [ ExportTag('doors', 'door'),
-                   ExportTag('domains', 'domain', False, [ 'thread_count', 'event_queue_size' ], [], ExportTag.DomainInit, ExportTag.DomainFilter),
-                   ExportTag('pools', 'pool'),
-                   ExportTag('poolgroups', 'poolgroup') ]
+    ExportTags = [ ExportTag('doors', 'door', False, [ 'load' ], [], None, None),
+                   ExportTag('domains', 'domain', False, [ 'event_queue_size' ], [], ExportTag.DomainInit, ExportTag.DomainFilter),
+                   ExportTag('pools', 'pool', False, [ 'active', 'queued', 'total', 'precious', 'removable', 'used', 'free' ], [], None, None),
+                   ExportTag('poolgroups', 'poolgroup', False, [ 'active', 'queued', 'total', 'precious', 'removable', 'used', 'free' ], [], None, None) ]
 
     def __init__(self, host, port):
         self._info_host = host
