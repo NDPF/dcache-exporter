@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from SocketServer import ThreadingMixIn
 
-VERSION = '0.4'
+VERSION = '0.5'
 
 def start_http6_server(port, addr=''):
     """Starts an HTTP server for prometheus metrics as a daemon thread"""
@@ -119,7 +119,7 @@ class DcacheCollector(object):
             type = element.attrib.get('type')
             name = element.get('name').replace('-', '_')
             if export.collect_metric(name, labels):
-                metric_name = '{0}_{1}'.format(export.prefix, name)
+                metric_name = 'dcache_{0}_{1}'.format(export.prefix, name)
                 if type == 'float' or type == 'integer':
                     if type == 'float':
                         value = float(element.text)
