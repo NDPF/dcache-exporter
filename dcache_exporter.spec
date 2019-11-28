@@ -1,10 +1,11 @@
 Summary: Prometheus exporter for dcache metrics
 Name: dcache_exporter
 Version: %{_version}
-Release: 1
+Release: 2
 License: GPLv3
 Source0: %{_source}
 Requires: python2-prometheus_client
+BuildArch: noarch
 %{?systemd_requires}
 
 %description
