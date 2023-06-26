@@ -4,7 +4,7 @@ Version: %{_version}
 Release: 2
 License: GPLv3
 Source0: %{_source}
-Requires: python2-prometheus_client
+Requires: python3-prometheus_client
 BuildArch: noarch
 %{?systemd_requires}
 

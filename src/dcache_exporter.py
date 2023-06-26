@@ -1,8 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import argparse
 import copy
-import httplib
 import re
 import prometheus_client as pclient
 import socket
@@ -10,10 +9,10 @@ import threading
 import time
 import xml.etree.ElementTree as ET
 
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-from SocketServer import ThreadingMixIn
+from http.server import HTTPServer
+from socketserver import ThreadingMixIn
 
-VERSION = '0.6'
+VERSION = '0.7'
 PROM_PORT = 9310
 PROM_ADDRESS = '::'
 INFO_PORT = 22112
@@ -113,7 +112,7 @@ class DcacheCollector(object):
             d = sock.recv(1024)
             if not d:
                 break
-            data.append(d)
+            data.append(str(d, 'utf-8'))
         sock.close()
         text = ''.join(data)
         tree = ET.fromstring(text)
@@ -132,12 +131,12 @@ class DcacheCollector(object):
                     else:
                         value = int(element.text)
                     if metric_name not in self._metrics:
-                        self._metrics[metric_name] = pclient.core.GaugeMetricFamily(metric_name, '', labels=[ n for (n, v) in labels ])
+                        self._metrics[metric_name] = pclient.metrics_core.GaugeMetricFamily(metric_name, '', labels=[ n for (n, v) in labels ])
                     self._metrics[metric_name].add_metric([ v for (n, v) in labels ], value)
         else:
             for child in element:
                 l = copy.copy(labels)
-                for n,v in element.attrib.iteritems():
+                for n,v in element.attrib.items():
                     l.append( ('{0}_{1}'.format(tag, n), v) )
                 self._collect_metric(child, export, l)
 

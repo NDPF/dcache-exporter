@@ -2,7 +2,7 @@ DEFAULT: all
 
 version:
 	$(eval VERSION := $(shell cd src; grep 'VERSION' dcache_exporter.py))
-	$(eval VERSION := $(shell python -c "$(VERSION) ; print VERSION"))
+	$(eval VERSION := $(shell python3 -c "$(VERSION) ; print(VERSION)"))
 
 build_tar: version
 	mkdir -p tar/dcache_exporter-$(VERSION)
